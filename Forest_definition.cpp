@@ -12,6 +12,8 @@ using namespace std;
 Forest::Forest()
 {
 	Tree tree1;
+
+	//Getting random indices for where the fire starts....
 	int startingRow = rand() % 20 + 0;
 	int startingColumn = rand() % 20 + 0;
 	
@@ -22,7 +24,7 @@ Forest::Forest()
 			if (i == startingRow && j == startingColumn)
 			{
 				tree1.setState(1);
-				treeCollection[i][j] = tree1;       //initialising state of the middle tree
+				treeCollection[i][j] = tree1;       //initialising state of the starting point
 			}
 			else 
 			{
