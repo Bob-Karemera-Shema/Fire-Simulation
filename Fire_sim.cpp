@@ -23,17 +23,18 @@ int main(void)
 		view.updateGrid(updatedForest);
 		view.displayForest();
 
-		forest1.unburnt();
-		forest1.timeStepUpdate();
-		//updatedForest = forest1.getTrees();
-		//view.updateGrid(updatedForest);
-		cout << endl;
+		forest1.unburntNeighbor();
+		forest1.spreadFire();
 
+		cout << endl;
+		cout << "Moist Ground" << endl;
+		cout << "Rows: " << forest1.getMoistRow() + 1 << endl;
+		cout << "Columns: " << forest1.getMoistColumn() + 1 << endl;
+		cout << endl;
 		cout << "PRESS:\n";
 		cout << "1. Press any key to update forest view\n";
 		cout << "2. 'Space' key to stop simulation\n";
 		cin >> val;
-
 		value = (int)val;
 	}
 

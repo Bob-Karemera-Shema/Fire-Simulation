@@ -13,9 +13,15 @@ Forest::Forest()
 {
 	Tree tree1;
 
+	//initialise random number generator
+	srand(time(NULL));
 	//Getting random indices for where the fire starts....
 	int startingRow = rand() % 20 + 0;
 	int startingColumn = rand() % 20 + 0;
+
+	//initialise ground moisture attribute
+	groundMoistureRow = rand() % 20 + 0;
+	groundMoistureColumn = rand() % 20 + 0;
 	
 	for (int i = 0; i < 21; i++)
 	{
@@ -35,7 +41,7 @@ Forest::Forest()
 	}
 }
 
-void Forest::timeStepUpdate()
+void Forest::spreadFire()
 {
 	int not_Burning = 0;
 	int burning = 1;
@@ -58,7 +64,7 @@ void Forest::timeStepUpdate()
 	}
 }
 
-void Forest::unburnt()
+void Forest::unburntNeighbor()
 {
 	int not_Burning = 0;
 	int burning = 1;
@@ -73,7 +79,7 @@ void Forest::unburnt()
 				//North neighbor
 				if (i != 0)
 				{
-					if (treeCollection[i - 1][j].getState() == not_Burning && burnProbability())
+					if (treeCollection[i - 1][j].getState() == not_Burning && burnProbability(i, j))
 					{
 						treeCollection[i - 1][j].setState(affected);
 					}
@@ -81,7 +87,7 @@ void Forest::unburnt()
 				//South neighbor
 				if (i != 20)
 				{
-					if (treeCollection[i + 1][j].getState() == not_Burning && burnProbability())
+					if (treeCollection[i + 1][j].getState() == not_Burning && burnProbability(i, j))
 					{
 						treeCollection[i + 1][j].setState(affected);
 					}
@@ -89,7 +95,7 @@ void Forest::unburnt()
 				//West neighbor
 				if (j != 0)
 				{
-					if (treeCollection[i][j - 1].getState() == not_Burning && burnProbability())
+					if (treeCollection[i][j - 1].getState() == not_Burning && burnProbability(i, j))
 					{
 						treeCollection[i][j - 1].setState(affected);
 					}
@@ -97,7 +103,7 @@ void Forest::unburnt()
 				//East neighbor
 				if (j != 20)
 				{
-					if (treeCollection[i][j + 1].getState() == not_Burning && burnProbability())
+					if (treeCollection[i][j + 1].getState() == not_Burning && burnProbability(i, j))
 					{
 						treeCollection[i][j + 1].setState(affected);
 					}
@@ -107,21 +113,43 @@ void Forest::unburnt()
 	}
 }
 
-bool Forest::burnProbability()
+bool Forest::burnProbability(int a, int b)
 {
+	int moistBurningPossibility = 20;    //when ground is moist, there is 20% chance of burning
+	int dryBurningPossibility = 50;      //when ground is moist, there is 50% chance of burning
+
+	int random = rand() % 100 + 0;
+
+	if (a <= groundMoistureRow && b <= groundMoistureColumn)
+	{
+		if (random <= moistBurningPossibility)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (random <= dryBurningPossibility)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	/*
-	default_random_engine engine;
-	uniform_int_distribution<int> pull(1, 5);
-	int random = pull(engine);
-	*/
-
-	int random = rand() % 100 + 1;
-
 	if(random < 50)
 	{
 		return true;
 	}
 	else { return false; }
+	*/
 }
 
 list<string> Forest::getTrees()
@@ -152,4 +180,15 @@ list<string> Forest::getTrees()
 	}
 
 	return current;
+}
+
+
+int Forest::getMoistRow()
+{
+	return groundMoistureRow;
+}
+
+int Forest::getMoistColumn()
+{
+	return groundMoistureColumn;
 }

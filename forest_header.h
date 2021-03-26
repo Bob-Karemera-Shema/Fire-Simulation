@@ -22,13 +22,16 @@ public:
 class Forest
 {
 	Tree treeCollection[21][21];
-	//Tree current;
+	int groundMoistureRow;
+	int groundMoistureColumn;
 public:
 	Forest();
-	bool burnProbability();
-	void timeStepUpdate();
-	void unburnt();
+	bool burnProbability(int a, int b);
+	void spreadFire();
+	void unburntNeighbor();
 	list<string> getTrees();
+	int getMoistRow();
+	int getMoistColumn();
 };
 
 class Grid
