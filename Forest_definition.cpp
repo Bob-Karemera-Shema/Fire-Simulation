@@ -15,29 +15,33 @@ Forest::Forest()
 
 	//initialise random number generator
 	srand(time(NULL));
-	//Getting random indices for where the fire starts....
-	int startingRow = rand() % 20 + 0;
-	int startingColumn = rand() % 20 + 0;
 
 	//initialise ground moisture attribute
 	groundMoistureRow = rand() % 20 + 0;
 	groundMoistureColumn = rand() % 20 + 0;
+
+	//randomly generating number of initially burning trees
+	initialBurningTrees = rand() % 10 + 1;
+	int counter = 0;
+	int row;
+	int column;
 	
 	for (int i = 0; i < 21; i++)
 	{
 		for (int j = 0; j < 21; j++)
 		{
-			if (i == startingRow && j == startingColumn)
-			{
-				tree1.setState(1);
-				treeCollection[i][j] = tree1;       //initialising state of the starting point
-			}
-			else 
-			{
-				tree1.setState(0);
-				treeCollection[i][j] = tree1;
-			}
+			treeCollection[i][j] = tree1;
 		}
+	}
+
+	while (counter < initialBurningTrees)
+	{
+		//randomly initialise initial burning trees
+
+		row = rand() % 20 + 0;      //randomly generate row index
+		column = rand() % 20 + 0;   //randomly generate column index
+		treeCollection[row][column].setState(1);
+		counter++;
 	}
 }
 
@@ -79,7 +83,7 @@ void Forest::unburntNeighbor()
 				//North neighbor
 				if (i != 0)
 				{
-					if (treeCollection[i - 1][j].getState() == not_Burning && burnProbability(i, j))
+					if (treeCollection[i - 1][j].getState() == not_Burning && burnProbability(i - 1, j))
 					{
 						treeCollection[i - 1][j].setState(affected);
 					}
@@ -87,7 +91,7 @@ void Forest::unburntNeighbor()
 				//South neighbor
 				if (i != 20)
 				{
-					if (treeCollection[i + 1][j].getState() == not_Burning && burnProbability(i, j))
+					if (treeCollection[i + 1][j].getState() == not_Burning && burnProbability(i + 1, j))
 					{
 						treeCollection[i + 1][j].setState(affected);
 					}
@@ -95,7 +99,7 @@ void Forest::unburntNeighbor()
 				//West neighbor
 				if (j != 0)
 				{
-					if (treeCollection[i][j - 1].getState() == not_Burning && burnProbability(i, j))
+					if (treeCollection[i][j - 1].getState() == not_Burning && burnProbability(i, j - 1))
 					{
 						treeCollection[i][j - 1].setState(affected);
 					}
@@ -103,7 +107,7 @@ void Forest::unburntNeighbor()
 				//East neighbor
 				if (j != 20)
 				{
-					if (treeCollection[i][j + 1].getState() == not_Burning && burnProbability(i, j))
+					if (treeCollection[i][j + 1].getState() == not_Burning && burnProbability(i, j + 1))
 					{
 						treeCollection[i][j + 1].setState(affected);
 					}
@@ -142,14 +146,6 @@ bool Forest::burnProbability(int a, int b)
 			return false;
 		}
 	}
-
-	/*
-	if(random < 50)
-	{
-		return true;
-	}
-	else { return false; }
-	*/
 }
 
 list<string> Forest::getTrees()

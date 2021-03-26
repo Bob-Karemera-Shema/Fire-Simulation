@@ -24,6 +24,7 @@ class Forest
 	Tree treeCollection[21][21];
 	int groundMoistureRow;
 	int groundMoistureColumn;
+	int initialBurningTrees;
 public:
 	Forest();
 	bool burnProbability(int a, int b);
