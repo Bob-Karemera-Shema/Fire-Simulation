@@ -22,8 +22,7 @@ Forest::Forest()
 
 	//initialise wind speed and direction
 	windDirection = rand() % 4 + 1;      //North(1), South(2), East(3), West(4) respectively
-	//windSpeed = rand() % 3 + 1;          //None(1), Low(2), High(3)
-	windSpeed = 3;
+	windSpeed = rand() % 3 + 1;          //None(1), Low(2), High(3)
 
 	//randomly generating number of initially burning trees
 	initialBurningTrees = rand() % 10 + 1;
@@ -169,7 +168,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 {
 	if (windDirection == 1)
 	{
-		if (c < a)
+		if (c <= a)
 		{
 			return true;
 		}
@@ -180,7 +179,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 	}
 	else if (windDirection == 2)
 	{
-		if (c > a)
+		if (c >= a)
 		{
 			return true;
 		}
@@ -191,7 +190,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 	}
 	else if (windDirection == 3)
 	{
-		if (d > b)
+		if (d >= b)
 		{
 			return true;
 		}
@@ -202,7 +201,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 	}
 	else if (windDirection == 4)
 	{
-		if (d < b)
+		if (d <= b)
 		{
 			return true;
 		}
@@ -215,7 +214,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 
 bool Forest::windSp()
 {
-	int random = rand() % 100 + 50;
+	int random = rand() % 100 + 0;
 	if (windSpeed == 1)
 	{
 		if (random <= 20)
@@ -229,7 +228,7 @@ bool Forest::windSp()
 	}
 	else if (windSpeed == 2)
 	{
-		if (random <= 50)
+		if (random <= 80)
 		{
 			return true;
 		}
