@@ -25,6 +25,8 @@ class Forest
 	int groundMoistureRow;
 	int groundMoistureColumn;
 	int initialBurningTrees;
+	int initialEmptyCells;
+	int weather;
 	int windSpeed;
 	int windDirection;
 public:
@@ -33,6 +35,7 @@ public:
 	bool groundMoisture(int a, int b);
 	bool windDir(int a, int b, int c, int d);
 	bool windSp();
+	bool weatherCondition();
 	void spreadFire();
 	void unburntNeighbor();
 	list<string> getTrees();

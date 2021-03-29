@@ -16,11 +16,14 @@ Forest::Forest()
 	//initialise random number generator
 	srand(time(NULL));
 
-	//initialise ground moisture attribute
+	//randomly initialise weather
+	weather = rand() % 2 + 1;   //Sunny(1), Rainny(2)
+
+	//randomly initialise ground moisture attribute
 	groundMoistureRow = rand() % 10 + 0;
 	groundMoistureColumn = rand() % 10 + 0;
 
-	//initialise wind speed and direction
+	//randomly initialise wind speed and direction
 	windDirection = rand() % 4 + 1;      //North(1), South(2), East(3), West(4) respectively
 	windSpeed = rand() % 3 + 1;          //None(1), Low(2), High(3)
 
@@ -29,6 +32,9 @@ Forest::Forest()
 	int counter = 0;
 	int row;
 	int column;
+
+	//randomly generating number of initially empty locations
+	initialEmptyCells = rand() % 50 + 1;
 	
 	for (int i = 0; i < 21; i++)
 	{
@@ -45,6 +51,17 @@ Forest::Forest()
 		row = rand() % 20 + 0;      //randomly generate row index
 		column = rand() % 20 + 0;   //randomly generate column index
 		treeCollection[row][column].setState(1);
+		counter++;
+	}
+
+	counter = 0;    //counter reset to zero
+	while (counter < initialEmptyCells)
+	{
+		//randomly initialise initial empty locations
+
+		row = rand() % 20 + 0;      //randomly generate row index
+		column = rand() % 20 + 0;   //randomly generate column index
+		treeCollection[row][column].setState(2);
 		counter++;
 	}
 }
@@ -131,6 +148,12 @@ void Forest::unburntNeighbor()
 			}
 		}
 	}
+}
+
+bool Forest::weatherCondition()
+{
+	if (weather == 1) { return true; }
+	else { return false; }
 }
 
 bool Forest::groundMoisture(int a, int b)
