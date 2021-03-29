@@ -30,6 +30,9 @@ int main(void)
 		cout << "Moist Ground" << endl;
 		cout << "Rows: " << forest1.getMoistRow() + 1 << endl;
 		cout << "Columns: " << forest1.getMoistColumn() + 1 << endl;
+		cout << "Wind Variables" << endl;
+		cout << "Direction: " << forest1.getWindDirection() << endl;
+		cout << "Speed: " << forest1.getWindSpeed() << endl;
 		cout << endl;
 		cout << "PRESS:\n";
 		cout << "1. Press any key to update forest view\n";

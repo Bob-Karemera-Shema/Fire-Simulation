@@ -17,8 +17,13 @@ Forest::Forest()
 	srand(time(NULL));
 
 	//initialise ground moisture attribute
-	groundMoistureRow = rand() % 20 + 0;
-	groundMoistureColumn = rand() % 20 + 0;
+	groundMoistureRow = rand() % 10 + 0;
+	groundMoistureColumn = rand() % 10 + 0;
+
+	//initialise wind speed and direction
+	windDirection = rand() % 4 + 1;      //North(1), South(2), East(3), West(4) respectively
+	//windSpeed = rand() % 3 + 1;          //None(1), Low(2), High(3)
+	windSpeed = 3;
 
 	//randomly generating number of initially burning trees
 	initialBurningTrees = rand() % 10 + 1;
@@ -43,6 +48,14 @@ Forest::Forest()
 		treeCollection[row][column].setState(1);
 		counter++;
 	}
+}
+
+int Forest::randomGenerator(int a, int b)
+{
+	int result;
+	srand(time(NULL));
+	result = rand() % a + b;
+	return result;
 }
 
 void Forest::spreadFire()
@@ -83,7 +96,8 @@ void Forest::unburntNeighbor()
 				//North neighbor
 				if (i != 0)
 				{
-					if (treeCollection[i - 1][j].getState() == not_Burning && burnProbability(i - 1, j))
+					if (treeCollection[i - 1][j].getState() == not_Burning && groundMoisture(i - 1, j)
+						&& windSp() && windDir(i, j, i - 1, j))
 					{
 						treeCollection[i - 1][j].setState(affected);
 					}
@@ -91,7 +105,8 @@ void Forest::unburntNeighbor()
 				//South neighbor
 				if (i != 20)
 				{
-					if (treeCollection[i + 1][j].getState() == not_Burning && burnProbability(i + 1, j))
+					if (treeCollection[i + 1][j].getState() == not_Burning && groundMoisture(i + 1, j) 
+						&& windSp() && windDir(i, j, i+1, j))
 					{
 						treeCollection[i + 1][j].setState(affected);
 					}
@@ -99,7 +114,8 @@ void Forest::unburntNeighbor()
 				//West neighbor
 				if (j != 0)
 				{
-					if (treeCollection[i][j - 1].getState() == not_Burning && burnProbability(i, j - 1))
+					if (treeCollection[i][j - 1].getState() == not_Burning && groundMoisture(i, j - 1)
+						&& windSp() && windDir(i, j, i, j-1))
 					{
 						treeCollection[i][j - 1].setState(affected);
 					}
@@ -107,7 +123,8 @@ void Forest::unburntNeighbor()
 				//East neighbor
 				if (j != 20)
 				{
-					if (treeCollection[i][j + 1].getState() == not_Burning && burnProbability(i, j + 1))
+					if (treeCollection[i][j + 1].getState() == not_Burning && groundMoisture(i, j + 1)
+						&& windSp() && windDir(i, j, i, j+1))
 					{
 						treeCollection[i][j + 1].setState(affected);
 					}
@@ -117,7 +134,7 @@ void Forest::unburntNeighbor()
 	}
 }
 
-bool Forest::burnProbability(int a, int b)
+bool Forest::groundMoisture(int a, int b)
 {
 	int moistBurningPossibility = 20;    //when ground is moist, there is 20% chance of burning
 	int dryBurningPossibility = 50;      //when ground is moist, there is 50% chance of burning
@@ -145,6 +162,85 @@ bool Forest::burnProbability(int a, int b)
 		{
 			return false;
 		}
+	}
+}
+
+bool Forest::windDir(int a, int b, int c, int d)
+{
+	if (windDirection == 1)
+	{
+		if (c < a)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (windDirection == 2)
+	{
+		if (c > a)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (windDirection == 3)
+	{
+		if (d > b)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (windDirection == 4)
+	{
+		if (d < b)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
+bool Forest::windSp()
+{
+	int random = rand() % 100 + 50;
+	if (windSpeed == 1)
+	{
+		if (random <= 20)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (windSpeed == 2)
+	{
+		if (random <= 50)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (windSpeed == 3)
+	{
+		return true;
 	}
 }
 
@@ -187,4 +283,40 @@ int Forest::getMoistRow()
 int Forest::getMoistColumn()
 {
 	return groundMoistureColumn;
+}
+
+string Forest::getWindDirection()
+{
+	if (windDirection == 1)
+	{
+		return "North";
+	}
+	else if (windDirection == 2)
+	{
+		return "South";
+	}
+	else if (windDirection == 3)
+	{
+		return "East";
+	}
+	else if (windDirection == 4)
+	{
+		return "West";
+	}
+}
+
+string Forest::getWindSpeed()
+{
+	if (windSpeed == 1)
+	{
+		return "None";
+	}
+	else if (windSpeed == 2)
+	{
+		return "Low";
+	}
+	else if (windSpeed == 3)
+	{
+		return "High";
+	}
 }

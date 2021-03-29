@@ -25,14 +25,21 @@ class Forest
 	int groundMoistureRow;
 	int groundMoistureColumn;
 	int initialBurningTrees;
+	int windSpeed;
+	int windDirection;
 public:
 	Forest();
-	bool burnProbability(int a, int b);
+	int randomGenerator(int a, int b);
+	bool groundMoisture(int a, int b);
+	bool windDir(int a, int b, int c, int d);
+	bool windSp();
 	void spreadFire();
 	void unburntNeighbor();
 	list<string> getTrees();
 	int getMoistRow();
 	int getMoistColumn();
+	string getWindDirection();
+	string getWindSpeed();
 };
 
 class Grid
