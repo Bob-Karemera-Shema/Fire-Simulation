@@ -33,6 +33,7 @@ public:
 	Forest();
 	int randomGenerator(int a, int b);
 	bool groundMoisture(int a, int b);
+	bool neighborProbability(int a, int b);
 	bool windDir(int a, int b, int c, int d);
 	bool windSp();
 	bool weatherCondition();
@@ -43,6 +44,7 @@ public:
 	int getMoistColumn();
 	string getWindDirection();
 	string getWindSpeed();
+	string getWeather();
 };
 
 class Grid

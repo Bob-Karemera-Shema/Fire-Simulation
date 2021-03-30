@@ -27,6 +27,7 @@ int main(void)
 		forest1.spreadFire();
 
 		cout << endl;
+		cout << "Weather: " << forest1.getWeather() << endl;
 		cout << "Moist Ground" << endl;
 		cout << "Rows: " << forest1.getMoistRow() + 1 << endl;
 		cout << "Columns: " << forest1.getMoistColumn() + 1 << endl;

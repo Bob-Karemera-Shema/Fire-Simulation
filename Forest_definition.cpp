@@ -28,13 +28,13 @@ Forest::Forest()
 	windSpeed = rand() % 3 + 1;          //None(1), Low(2), High(3)
 
 	//randomly generating number of initially burning trees
-	initialBurningTrees = rand() % 10 + 1;
+	initialBurningTrees = rand() % 50 + 1;
 	int counter = 0;
 	int row;
 	int column;
 
 	//randomly generating number of initially empty locations
-	initialEmptyCells = rand() % 50 + 1;
+	initialEmptyCells = rand() % 10 + 1;
 	
 	for (int i = 0; i < 21; i++)
 	{
@@ -113,7 +113,7 @@ void Forest::unburntNeighbor()
 				if (i != 0)
 				{
 					if (treeCollection[i - 1][j].getState() == not_Burning && groundMoisture(i - 1, j)
-						&& windSp() && windDir(i, j, i - 1, j))
+						&& windSp() && windDir(i, j, i - 1, j) && weatherCondition() && neighborProbability(i - 1, j))
 					{
 						treeCollection[i - 1][j].setState(affected);
 					}
@@ -122,7 +122,7 @@ void Forest::unburntNeighbor()
 				if (i != 20)
 				{
 					if (treeCollection[i + 1][j].getState() == not_Burning && groundMoisture(i + 1, j) 
-						&& windSp() && windDir(i, j, i+1, j))
+						&& windSp() && windDir(i, j, i+1, j) && weatherCondition() && neighborProbability(i + 1, j))
 					{
 						treeCollection[i + 1][j].setState(affected);
 					}
@@ -131,7 +131,7 @@ void Forest::unburntNeighbor()
 				if (j != 0)
 				{
 					if (treeCollection[i][j - 1].getState() == not_Burning && groundMoisture(i, j - 1)
-						&& windSp() && windDir(i, j, i, j-1))
+						&& windSp() && windDir(i, j, i, j-1) && weatherCondition() && neighborProbability(i, j-1))
 					{
 						treeCollection[i][j - 1].setState(affected);
 					}
@@ -140,7 +140,7 @@ void Forest::unburntNeighbor()
 				if (j != 20)
 				{
 					if (treeCollection[i][j + 1].getState() == not_Burning && groundMoisture(i, j + 1)
-						&& windSp() && windDir(i, j, i, j+1))
+						&& windSp() && windDir(i, j, i, j+1) && weatherCondition() && neighborProbability(i, j+1))
 					{
 						treeCollection[i][j + 1].setState(affected);
 					}
@@ -148,6 +148,48 @@ void Forest::unburntNeighbor()
 			}
 		}
 	}
+}
+
+bool Forest::neighborProbability(int a, int b)
+{
+	int not_Burning = 0;
+	int burning = 1;
+	int burningNeighbors = 0;
+		//North neighbor
+		if (a != 0)
+		{
+			if (treeCollection[a - 1][b].getState() == burning)
+			{
+				burningNeighbors++;
+			}
+		}
+		//South neighbor
+		if (a != 20)
+		{
+			if (treeCollection[a + 1][b].getState() == burning)
+			{
+				burningNeighbors++;
+			}
+		}
+		//West neighbor
+		if (b != 0)
+		{
+			if (treeCollection[a][b - 1].getState() == burning)
+			{
+				burningNeighbors++;
+			}
+		}
+		//East neighbor
+		if (b != 20)
+		{
+			if (treeCollection[a][b + 1].getState() == burning)
+			{
+				burningNeighbors++;
+			}
+		}
+
+	if (burningNeighbors < 2) { return false; }
+	else { return true; }
 }
 
 bool Forest::weatherCondition()
@@ -341,4 +383,10 @@ string Forest::getWindSpeed()
 	{
 		return "High";
 	}
+}
+
+string Forest::getWeather()
+{
+	if (weather == 1) { return "Sunny"; }
+	else { return "Rainny"; }
 }
