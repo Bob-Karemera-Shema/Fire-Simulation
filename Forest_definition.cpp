@@ -19,12 +19,12 @@ Forest::Forest()
 	//randomly initialise weather
 	weather = rand() % 2 + 1;   //Sunny(1), Rainny(2)
 
-	//randomly initialise ground moisture attribute
+	//randomly initialise moist area of the forest
 	groundMoistureRow = rand() % 10 + 0;
 	groundMoistureColumn = rand() % 10 + 0;
 
 	//randomly initialise wind speed and direction
-	windDirection = rand() % 4 + 1;      //North(1), South(2), East(3), West(4) respectively
+	windDirection = rand() % 4 + 1;      //North(1), South(2), East(3), West(4)
 	windSpeed = rand() % 3 + 1;          //None(1), Low(2), High(3)
 
 	//randomly generating number of initially burning trees
@@ -64,14 +64,6 @@ Forest::Forest()
 		treeCollection[row][column].setState(2);
 		counter++;
 	}
-}
-
-int Forest::randomGenerator(int a, int b)
-{
-	int result;
-	srand(time(NULL));
-	result = rand() % a + b;
-	return result;
 }
 
 void Forest::spreadFire()
