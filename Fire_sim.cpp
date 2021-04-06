@@ -10,21 +10,21 @@ using namespace std;
 
 int main(void)
 {
-	char val;
-	Forest forest1;
-	Grid view;
+	char val;   //user input for each time step
+	Forest forest1;  //forest object
+	Grid view;  //grid object for display
 	int value = 0;
 	list<string> updatedForest;
 
 	while (value!=120)
 	{
 		system("CLS");
-		updatedForest = forest1.getTrees();
-		view.updateGrid(updatedForest);
-		view.displayForest();
+		updatedForest = forest1.getTrees();  //get current forest state
+		view.updateGrid(updatedForest);  //update grid
+		view.displayForest();   //display forest grid on console
 
-		forest1.unburntNeighbor();
-		forest1.spreadFire();
+		forest1.unburntNeighbor();  //checking unburnt trees
+		forest1.spreadFire();  //spreading fire
 
 		cout << endl;
 		cout << "Weather: " << forest1.getWeather() << endl;
