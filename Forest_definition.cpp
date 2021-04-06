@@ -9,6 +9,9 @@
 
 using namespace std;
 
+/// <summary>
+/// Forest class constructor
+/// </summary>
 Forest::Forest()
 {
 	Tree tree1;
@@ -36,6 +39,7 @@ Forest::Forest()
 	//randomly generating number of initially empty locations
 	initialEmptyCells = rand() % 10 + 1;
 	
+	//assign tree objects to the treecollection[21][21] array
 	for (int i = 0; i < 21; i++)
 	{
 		for (int j = 0; j < 21; j++)
@@ -66,12 +70,15 @@ Forest::Forest()
 	}
 }
 
+/// <summary>
+/// Updates tree objects' states after each time step
+/// </summary>
 void Forest::spreadFire()
 {
 	int not_Burning = 0;
 	int burning = 1;
 	int empty = 2;
-	int affected = 3;
+	int affected = 3;  //unburnt neighbors whose state changes from unburnt to burning after a time step(unburnt trees affected by burning neighbors)
 	for (int i = 0; i < 21; i++)
 	{
 		for (int j = 0; j < 21; j++)
@@ -89,12 +96,17 @@ void Forest::spreadFire()
 	}
 }
 
+/// <summary>
+/// traverses the forest array looking for unburnt trees with burning neighbors.
+/// if a neighbor is burning and considering other variables like weather,
+/// unburnt neighbors will catch fire or not depending on those variables.
+/// </summary>
 void Forest::unburntNeighbor()
 {
 	int not_Burning = 0;
 	int burning = 1;
 	int empty = 2;
-	int affected = 3;
+	int affected = 3;  //unburnt neighbors whose state changes from unburnt to burning after a time step(unburnt trees affected by burning neighbors)
 	for (int i = 0; i < 21; i++)
 	{
 		for (int j = 0; j < 21; j++)
@@ -142,9 +154,16 @@ void Forest::unburntNeighbor()
 	}
 }
 
+/// <summary>
+/// returns a boolean value to determine whether a tree burns proportionally depending on number of burning neighbors
+/// True: if number of burning neighbors is 2 or more
+/// False: if number of burning neighbors is less than 2.
+/// </summary>
+/// <param name="a"></row index of unburnt tree>
+/// <param name="b"></column index of unburnt tree>
+/// <returns><boolean value>
 bool Forest::neighborProbability(int a, int b)
 {
-	int not_Burning = 0;
 	int burning = 1;
 	int burningNeighbors = 0;
 		//North neighbor
@@ -184,21 +203,36 @@ bool Forest::neighborProbability(int a, int b)
 	else { return true; }
 }
 
+/// <summary>
+///  returns a boolean value to determine whether a tree burns depending on weather conditions at runtime
+/// True: if it is sunny at runtime
+/// False: if it is rainny at runtime
+/// </summary>
+/// <returns><boolean value>
 bool Forest::weatherCondition()
 {
-	if (weather == 1) { return true; }
-	else { return false; }
+	if (weather == 1) { return true; }  //Sunny: weather==1
+	else { return false; }              //Rainny: weather==2
 }
 
+/// <summary>
+/// Determines whether a tree burns ddepending on whether tree is located on moist or dry ground
+/// </summary>
+/// <param name="a"></row index of unburnt tree>
+/// <param name="b"></column index of unburnt tree>
+/// <returns></returns a boolean value>
 bool Forest::groundMoisture(int a, int b)
 {
 	int moistBurningPossibility = 20;    //when ground is moist, there is 20% chance of burning
-	int dryBurningPossibility = 50;      //when ground is moist, there is 50% chance of burning
+	int dryBurningPossibility = 80;      //when ground is dry, there is 80% chance of burning
 
-	int random = rand() % 100 + 0;
+	//initialise random number generator
+	srand(time(NULL));
+	int random = rand() % 100 + 0;       //randomly generate a number
 
 	if (a <= groundMoistureRow && b <= groundMoistureColumn)
 	{
+		//tree is on moist ground
 		if (random <= moistBurningPossibility)
 		{
 			return true;
@@ -210,6 +244,7 @@ bool Forest::groundMoisture(int a, int b)
 	}
 	else
 	{
+		//tree is on dry ground
 		if (random <= dryBurningPossibility)
 		{
 			return true;
@@ -221,10 +256,20 @@ bool Forest::groundMoisture(int a, int b)
 	}
 }
 
+/// <summary>
+/// Determines whether a tree catches fire depending on wind direction
+/// Reference point for the four directions (North, South, East, West) is the tree at the center of the grid.
+/// </summary>
+/// <param name="a"></row index of unburnt tree>
+/// <param name="b"></column index of unburnt tree>
+/// <param name="c"></row index of tree at the center>
+/// <param name="d"></column index of tree at the center>
+/// <returns></returns>
 bool Forest::windDir(int a, int b, int c, int d)
 {
 	if (windDirection == 1)
 	{
+		//Wind direction is north
 		if (c <= a)
 		{
 			return true;
@@ -236,6 +281,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 	}
 	else if (windDirection == 2)
 	{
+		//Wind direction is south
 		if (c >= a)
 		{
 			return true;
@@ -247,6 +293,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 	}
 	else if (windDirection == 3)
 	{
+		//Wind direction is east
 		if (d >= b)
 		{
 			return true;
@@ -258,6 +305,7 @@ bool Forest::windDir(int a, int b, int c, int d)
 	}
 	else if (windDirection == 4)
 	{
+		//Wind direction is west
 		if (d <= b)
 		{
 			return true;
@@ -269,11 +317,18 @@ bool Forest::windDir(int a, int b, int c, int d)
 	}
 }
 
+/// <summary>
+///  Determines whether a tree catches fire depending on wind speed
+/// </summary>
+/// <returns></returns a boolean value>
 bool Forest::windSp()
 {
+	//initialise random number generator
+	srand(time(NULL));
 	int random = rand() % 100 + 0;
 	if (windSpeed == 1)
 	{
+		//wind speed: None
 		if (random <= 20)
 		{
 			return true;
@@ -285,6 +340,7 @@ bool Forest::windSp()
 	}
 	else if (windSpeed == 2)
 	{
+		//wind speed: Low
 		if (random <= 80)
 		{
 			return true;
@@ -296,10 +352,15 @@ bool Forest::windSp()
 	}
 	else if (windSpeed == 3)
 	{
+		//wind speed: High
 		return true;
 	}
 }
 
+/// <summary>
+/// returns string representation of the state of each tree in the forest after a time step
+/// </summary>
+/// <returns></returns a string list>
 list<string> Forest::getTrees()
 {
 	string cellContent;
@@ -330,17 +391,28 @@ list<string> Forest::getTrees()
 	return current;
 }
 
-
+/// <summary>
+/// returns number of rows located on moist ground
+/// </summary>
+/// <returns></returns an integer value>
 int Forest::getMoistRow()
 {
 	return groundMoistureRow;
 }
 
+/// <summary>
+/// returns number of columns located on moist ground
+/// </summary>
+/// <returns></returns an integer value>
 int Forest::getMoistColumn()
 {
 	return groundMoistureColumn;
 }
 
+/// <summary>
+/// returns wind direction at runtime
+/// </summary>
+/// <returns></returns string value>
 string Forest::getWindDirection()
 {
 	if (windDirection == 1)
@@ -361,6 +433,10 @@ string Forest::getWindDirection()
 	}
 }
 
+/// <summary>
+/// returns wind speed at runtime
+/// </summary>
+/// <returns></returns string value>
 string Forest::getWindSpeed()
 {
 	if (windSpeed == 1)
@@ -377,6 +453,10 @@ string Forest::getWindSpeed()
 	}
 }
 
+/// <summary>
+/// returns weather condition at runtime
+/// </summary>
+/// <returns></returns string value>
 string Forest::getWeather()
 {
 	if (weather == 1) { return "Sunny"; }

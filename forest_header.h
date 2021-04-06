@@ -50,7 +50,6 @@ class Grid
 {
 	string grid[21][21];       //string array holding visual representation of current forest state
 public:
-	Grid();                    //Grid class constructor
 	void updateGrid(list<string> current);  //updates visual representation of current forest state
 	void displayForest();   //displays current forest state
 };

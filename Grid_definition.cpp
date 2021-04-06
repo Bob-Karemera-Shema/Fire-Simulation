@@ -8,29 +8,13 @@
 
 using namespace std;
 
-Grid::Grid()
-{
-	string cellContent;
-
-	for (int i = 0; i < 21; i++)
-	{
-		for (int j = 0; j < 21; j++)
-		{
-			if (i == 10 && j == 10)
-			{
-				cellContent = "X ";
-				grid[i][j]= cellContent;       //initialising state of the middle tree
-				continue;
-			}
-
-			cellContent = "& ";
-			grid[i][j] = cellContent;
-		}
-	}
-}
-
+/// <summary>
+/// updates the grid display at each time step
+/// </summary>
+/// <param name="current"></param>
 void Grid::updateGrid(list<string> current)
 {
+	//using an iterator to traverse through the string list
 	list<string>::iterator it = current.begin();
 
 	for (int i = 0; i < 21; i++)
@@ -46,6 +30,9 @@ void Grid::updateGrid(list<string> current)
 	}
 }
 
+/// <summary>
+/// displays the grid at each time step
+/// </summary>
 void Grid::displayForest()
 {
 	for (int i = 0; i < 21; i++)
