@@ -23,8 +23,12 @@ Forest::Forest()
 	weather = rand() % 2 + 1;   //Sunny(1), Rainny(2)
 
 	//randomly initialise moist area of the forest
-	groundMoistureRow = rand() % 10 + 0;
-	groundMoistureColumn = rand() % 10 + 0;
+	int nbrOfMoistRows = rand() % 4 + 1;
+	int nbrOfMoistColumns = rand() % 4 + 1;
+	moistStartingRow = rand() % 10 + 0;
+	moistStartingColumn = rand() % 10 + 0;
+	moistEndRow = moistStartingRow + nbrOfMoistRows;
+	moistEndColumn = moistStartingColumn + nbrOfMoistColumns;
 
 	//randomly initialise wind speed and direction
 	windDirection = rand() % 4 + 1;      //North(1), South(2), East(3), West(4)
@@ -230,7 +234,7 @@ bool Forest::groundMoisture(int a, int b)
 	srand(time(NULL));
 	int random = rand() % 100 + 0;       //randomly generate a number
 
-	if (a <= groundMoistureRow && b <= groundMoistureColumn)
+	if (a >= moistStartingRow && a <= moistEndRow && b >= moistStartingColumn && b <= moistEndColumn)
 	{
 		//tree is on moist ground
 		if (random <= moistBurningPossibility)
@@ -392,21 +396,13 @@ list<string> Forest::getTrees()
 }
 
 /// <summary>
-/// returns number of rows located on moist ground
+/// returns rows located on moist ground
 /// </summary>
 /// <returns></returns an integer value>
-int Forest::getMoistRow()
+void Forest::getMoistArea()
 {
-	return groundMoistureRow;
-}
-
-/// <summary>
-/// returns number of columns located on moist ground
-/// </summary>
-/// <returns></returns an integer value>
-int Forest::getMoistColumn()
-{
-	return groundMoistureColumn;
+	cout << "Rows: " << moistStartingRow + 1 << " - " << moistEndRow + 1 << endl;
+	cout << "Columns: " << moistStartingColumn + 1 << " - " << moistEndColumn + 1 << endl;
 }
 
 /// <summary>
@@ -461,4 +457,22 @@ string Forest::getWeather()
 {
 	if (weather == 1) { return "Sunny"; }
 	else { return "Rainny"; }
+}
+
+int Forest::burningTrees()
+{
+	int nbrOfBurning = 0;
+	int burning = 1;
+	for (int i = 0; i < 21; i++)
+	{
+		for (int j = 0; j < 21; j++)
+		{
+			if (treeCollection[i][j].getState() == burning)
+			{
+				nbrOfBurning++;
+			}
+		}
+	}
+
+	return nbrOfBurning;
 }

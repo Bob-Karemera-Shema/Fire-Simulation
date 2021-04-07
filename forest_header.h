@@ -22,8 +22,10 @@ public:
 class Forest
 {
 	Tree treeCollection[21][21];   //array holding all trees in the forest
-	int groundMoistureRow;         //number of rows located in the moist area of the forest
-	int groundMoistureColumn;      //number of columns located in the moist area of the forest
+	int moistEndRow;               //row index where moist ground ends
+	int moistEndColumn;            //column index where moist ground ends
+	int moistStartingRow;          //row index where moist ground starts
+	int moistStartingColumn;       //column index where moist ground starts
 	int initialBurningTrees;       //number of initially burning trees
 	int initialEmptyCells;         //number of initially empty cells
 	int weather;                   //weather at runtime: Sunny(1), Rainny(2)
@@ -39,11 +41,11 @@ public:
 	void spreadFire();           //updates the state of tree objects in the forest
 	void unburntNeighbor();      //checks whether uburnt trees burn or not on the next time step
 	list<string> getTrees();     //returns updated grid view of the forest
-	int getMoistRow();           //returns moist rows of the forest
-	int getMoistColumn();        //returns moist columns of the forest
+	void getMoistArea();         //returns moist rows of the forest
 	string getWindDirection();   //returns wind direction
 	string getWindSpeed();       //returns wind speed
 	string getWeather();         //returns weather condition
+	int burningTrees();          //returns the number of burning trees at each time step
 };
 
 class Grid

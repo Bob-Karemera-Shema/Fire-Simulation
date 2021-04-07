@@ -29,15 +29,23 @@ int main(void)
 		cout << endl;
 		cout << "Weather: " << forest1.getWeather() << endl;
 		cout << "Moist Ground" << endl;
-		cout << "Rows: " << forest1.getMoistRow() + 1 << endl;
-		cout << "Columns: " << forest1.getMoistColumn() + 1 << endl;
+		forest1.getMoistArea();
 		cout << "Wind Variables" << endl;
 		cout << "Direction: " << forest1.getWindDirection() << endl;
 		cout << "Speed: " << forest1.getWindSpeed() << endl;
 		cout << endl;
 		cout << "PRESS:\n";
-		cout << "1. Press any key to update forest view\n";
-		cout << "2. 'Space' key to stop simulation\n";
+
+		/*
+		if (forest1.burningTrees() == 0)
+		{
+			cout << "There are no burning trees. The fire can not spread" << endl;
+			break;
+		}
+		*/
+
+		cout << "1. Press any key then Enter key to update forest view\n";
+		cout << "2. Press 'x' key then Enter key to stop simulation\n";
 		cin >> val;
 		value = (int)val;
 	}
